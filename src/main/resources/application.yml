@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 9000
   servlet:
     context-path: /
     encoding:
@@ -20,3 +20,8 @@ spring:
 logging:
   level:
     root: ${LOG_LEVEL:INFO}
+
+management:
+  endpoint:
+    health:
+      show-details: always
