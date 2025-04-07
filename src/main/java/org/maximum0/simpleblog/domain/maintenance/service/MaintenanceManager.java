@@ -1,4 +1,4 @@
-package org.maximum0.simpleblog.domain.maintenance;
+package org.maximum0.simpleblog.domain.maintenance.service;
 
 public interface MaintenanceManager {
 

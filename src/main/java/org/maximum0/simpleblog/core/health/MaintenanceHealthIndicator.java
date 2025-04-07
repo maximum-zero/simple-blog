@@ -1,6 +1,6 @@
 package org.maximum0.simpleblog.core.health;
 
-import org.maximum0.simpleblog.domain.maintenance.MaintenanceManager;
+import org.maximum0.simpleblog.domain.maintenance.service.MaintenanceManager;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
