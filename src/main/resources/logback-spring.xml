@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="60 seconds">
+
+    <!-- 기본 Spring Boot 설정 포함 -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- 공통 로그 설정 변수 -->
+    <property name="LOG_FILE_BASE" value="logback" />
+    <property name="CONSOLE_LOG_PATTERN" value="%d{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger) - %msg%n"/>
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n"/>
+    <property name="IMMEDIATE_FLUSH" value="true"/>
+
+    <!-- 로그 색상 설정 (콘솔) -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+
+    <!-- 콘솔 로그 출력 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 파일 로그 출력 (롤링 파일 방식) -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${LOG_FILE_BASE}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${LOG_FILE_BASE}.%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <immediateFlush>${IMMEDIATE_FLUSH}</immediateFlush>
+        </encoder>
+    </appender>
+
+    <!-- 비동기 로그 처리 (성능 향상 목적) -->
+    <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>1024</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <appender-ref ref="FILE" />
+    </appender>
+
+    <!-- 패키지 로그 분리 (공통) -->
+    <logger name="org.springframework" level="warn"/>
+
+    <!-- local 환경용 설정 -->
+    <springProfile name="local">
+        <property name="LOG_PATH" value="./logs" />
+        <root level="debug">
+            <appender-ref ref="CONSOLE" />
+        </root>
+
+        <!-- 패키지 로그 분리 -->
+        <logger name="org.maximum0.blog" level="debug" />
+        <logger name="org.hibernate.SQL" level="debug" />
+        <logger name="org.hibernate.type.descriptor.sql" level="trace" />
+    </springProfile>
+
+    <!-- prod 환경용 설정 -->
+    <springProfile name="prod">
+        <property name="LOG_PATH" value="/var/log/myapp" />
+        <root level="info">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="ASYNC_FILE" />
+        </root>
+
+        <!-- 패키지 로그 분리 -->
+        <logger name="org.maximum0.blog" level="warn" additivity="false" />
+    </springProfile>
+
+</configuration>
