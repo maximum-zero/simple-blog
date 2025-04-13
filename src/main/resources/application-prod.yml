@@ -11,3 +11,9 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: false
+
+notification:
+  discord:
+    webhook-urls:
+      info: ${DISCORD_WEBHOOK_INFO_URL}
+      error: ${DISCORD_WEBHOOK_ERROR_URL}
