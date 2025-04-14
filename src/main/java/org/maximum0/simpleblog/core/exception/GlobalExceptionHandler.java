@@ -68,8 +68,4 @@ public class GlobalExceptionHandler {
     private String buildNotificationTitle(String code, String message) {
         return String.format("[%s] %s", code, message);
     }
-//    private String buildNotificationMessage(String code, String message, NotificationLevel level, Exception ex) {
-//        return String.format("[%s] %s - Level: %s\nDetail: %s", code, message, level, ex.getMessage());
-//    }
-
 }

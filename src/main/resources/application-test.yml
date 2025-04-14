@@ -1,0 +1,5 @@
+notification:
+  discord:
+    webhook-urls:
+      info: "discord-webhook-info"
+      error: "discord-webhook-error"
